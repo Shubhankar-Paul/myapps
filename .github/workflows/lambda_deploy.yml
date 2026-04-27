@@ -34,7 +34,7 @@ jobs:
               public.ecr.aws/sam/build-python$PYTHON_VERSION \
               pip install -r $REQ_FILE --target $BUILD_DIR
            cp -r $SRC_DIR/* $BUILD_DIR/
-           cd $BUILD_DIR && zip -r ../$ZIP_FILE .
+           cd $BUILD_DIR && zip -r $ZIP_FILE .
            echo "✅ Lambda ZIP created → $ZIP_FILE"
         - name: Store Lambda ZIP artifact
           uses: actions/upload-artifact@v4
