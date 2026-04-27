@@ -8,11 +8,11 @@ on:
         required: true
         default: dev
 env:
-  SRC_DIR: src
-  BUILD_DIR : build
+  SRC_DIR: Lambda/src
+  BUILD_DIR : lambda/build
   PYTHON_VERSION: 3.11
-  REQ_FILE : requirements.txt
-  ZIP_FILE : lambda_build_${{ github.event.inputs.deploy_to }}.zip
+  REQ_FILE : lambda/requirements.txt
+  ZIP_FILE : lambda/lambda_build_${{ github.event.inputs.deploy_to }}.zip
   
 jobs:
     build-lambda-zip:
