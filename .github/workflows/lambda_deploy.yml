@@ -40,9 +40,23 @@ jobs:
           uses: actions/upload-artifact@v4
           with:
             name: lambda-zip
-            path: lambda/${{ env.ZIP_FILE }}
+            path: lambda/${{ env.ZIP_FILE }}  
             
-
+    teraform_deploy:
+      needs: build-lambda-zip
+      runs-on: ubuntu-latest
+      steps:
+        - name: Perform Terraform INIT
+          run: |
+            echo "Perform Terraform INIT"
+        - name: Perform Terraform Planning
+          run: |
+            echo "Perform Terraform Planning"
+    
+        - name: Perform Terraform Apply
+          run: |
+            echo "Perform Terraform Apply"
+    
 
         
           
