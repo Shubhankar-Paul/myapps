@@ -1,0 +1,53 @@
+name: Build Lambda packege for deployments
+on:
+  workflow_dispatch:
+    inputs:
+      deploy_to:
+        description: select the target envirement default
+        type: string
+        required: true
+        default: dev
+env:
+  SRC_DIR: src
+  BUILD_DIR : build
+  PYTHON_VERSION: 3.11
+  REQ_FILE : requirements.txt
+  ZIP_FILE : lambda_build_${{ github.event.inputs.deploy_to }}.zip
+  
+jobs:
+    build-lambda-zip:
+      name: Build Lambda ZIP
+      runs-on: ubuntu-latest
+      steps:
+        # 1. Checkout repository
+        - name: Checkout source code
+          uses: actions/checkout@v4
+
+        # Build lambda deployable zip artifact
+        - name: build lambda zip
+          run: |
+           rm -rf $BUILD_DIR
+           mkdir -p $BUILD_DIR
+           docker run --rm \
+             -v "$PWD":/var/task \
+             -w /var/task \
+              public.ecr.aws/sam/build-python$PYTHON_VERSION \
+              pip install -r $REQ_FILE --target $BUILD_DIR
+           cp -r $SRC_DIR/* $BUILD_DIR/
+           cd $BUILD_DIR && zip -r ../$ZIP_FILE .
+           echo "✅ Lambda ZIP created → $ZIP_FILE"
+        - name: Store Lambda ZIP artifact
+          uses: actions/upload-artifact@v4
+          with:
+            name: lambda-zip
+            path: lambda_build_${{ github.event.inputs.deploy_to }}.zip
+            
+
+
+        
+          
+
+        
+    
+
+  
